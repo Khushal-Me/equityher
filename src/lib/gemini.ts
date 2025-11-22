@@ -38,7 +38,7 @@ export class GeminiService {
 
   async analyzePortfolio(holdings: PortfolioHolding[], totalValue: number) {
     try {
-      const prompt = `Analyze this portfolio: ${JSON.stringify(holdings)}. Total value: $${totalValue}. Provide: diversification assessment, risk level, 3 recommendations, strengths, improvement areas. Keep descriptions short and concise. Return the response as a JSON object with keys: assessment, diversificationScore (0-100), riskLevel (Low/Medium/High), recommendations (array of strings), strengths (array of strings), improvements (array of strings).`;
+      const prompt = `Analyze this portfolio: ${JSON.stringify(holdings)}. Total value: $${totalValue}. Provide: diversification assessment, risk level, 3 recommendations, strengths, improvement areas. Keep descriptions extremely short and concise (max 1 sentence per point). Return the response as a JSON object with keys: assessment, diversificationScore (0-100), riskLevel (Low/Medium/High), recommendations (array of strings), strengths (array of strings), improvements (array of strings).`;
       
       const result = await this.model.generateContent(prompt);
       const response = await result.response;
