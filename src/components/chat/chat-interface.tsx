@@ -28,7 +28,7 @@ export function ChatInterface() {
         timestamp: Date.now(),
       });
     }
-  }, []);
+  }, [addMessage, messages.length]);
 
   useEffect(() => {
     if (scrollRef.current) {
