@@ -179,7 +179,7 @@ export default function LessonPage() {
                                 "p-4 rounded-lg border cursor-pointer transition-all",
                                 quizSubmitted 
                                   ? optIndex === q.correctAnswer 
-                                    ? "bg-secondary/10 border-secondary ring-1 ring-secondary"
+                                    ? "bg-green-50 border-green-500 ring-1 ring-green-500"
                                     : quizAnswers[i] === optIndex 
                                       ? "bg-destructive/10 border-destructive ring-1 ring-destructive"
                                       : "bg-muted/20 opacity-50"
@@ -196,11 +196,11 @@ export default function LessonPage() {
                               <div className="flex items-center justify-between">
                                 <span className={cn(
                                   "font-medium",
-                                  quizSubmitted && optIndex === q.correctAnswer ? "text-secondary" : 
+                                  quizSubmitted && optIndex === q.correctAnswer ? "text-green-700" : 
                                   quizSubmitted && quizAnswers[i] === optIndex ? "text-destructive" : "text-muted-foreground"
                                 )}>{option}</span>
                                 {quizSubmitted && optIndex === q.correctAnswer && (
-                                  <CheckCircle className="h-5 w-5 text-secondary" />
+                                  <CheckCircle className="h-5 w-5 text-green-600" />
                                 )}
                                 {quizSubmitted && quizAnswers[i] === optIndex && optIndex !== q.correctAnswer && (
                                   <XCircle className="h-5 w-5 text-destructive" />
