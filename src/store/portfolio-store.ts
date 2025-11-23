@@ -22,10 +22,31 @@ export const usePortfolioStore = create<PortfolioState>()(
       totalGainLossPercent: 0,
 
       buyStock: (symbol, name, price, shares) => {
+        // Basic validation
+        if (!symbol || typeof symbol !== 'string' || symbol.trim().length === 0) {
+          console.warn('buyStock: invalid symbol');
+          return false;
+        }
+        if (!name || typeof name !== 'string' || name.trim().length === 0) {
+          console.warn('buyStock: invalid name');
+          return false;
+        }
+        if (typeof price !== 'number' || !isFinite(price) || price <= 0) {
+          console.warn('buyStock: invalid price', price);
+          return false;
+        }
+        if (typeof shares !== 'number' || !Number.isInteger(shares) || shares <= 0) {
+          console.warn('buyStock: invalid shares', shares);
+          return false;
+        }
+
         const { cash, holdings, transactions } = get();
         const totalCost = price * shares;
 
-        if (totalCost > cash) return false;
+        if (totalCost > cash) {
+          console.warn('buyStock: insufficient cash', { totalCost, cash });
+          return false;
+        }
 
         const existingHolding = holdings.find(h => h.symbol === symbol);
         let newHoldings = [...holdings];
@@ -79,10 +100,31 @@ export const usePortfolioStore = create<PortfolioState>()(
       },
 
       sellStock: (symbol, price, shares) => {
+        // Basic validation
+        if (!symbol || typeof symbol !== 'string' || symbol.trim().length === 0) {
+          console.warn('sellStock: invalid symbol');
+          return false;
+        }
+        if (typeof price !== 'number' || !isFinite(price) || price <= 0) {
+          console.warn('sellStock: invalid price', price);
+          return false;
+        }
+        if (typeof shares !== 'number' || !Number.isInteger(shares) || shares <= 0) {
+          console.warn('sellStock: invalid shares', shares);
+          return false;
+        }
+
         const { cash, holdings, transactions } = get();
         const holding = holdings.find(h => h.symbol === symbol);
 
-        if (!holding || holding.shares < shares) return false;
+        if (!holding) {
+          console.warn('sellStock: no holding for symbol', symbol);
+          return false;
+        }
+        if (holding.shares < shares) {
+          console.warn('sellStock: not enough shares to sell', { requested: shares, available: holding.shares });
+          return false;
+        }
 
         const totalProceeds = price * shares;
         let newHoldings = [...holdings];
